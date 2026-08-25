@@ -30,7 +30,7 @@ async function runSearch(q) {
     return;
   }
   for (const r of rows.slice(0, 15)) {
-    console.log(`${String(r.ein).padEnd(11)} ${r.name}  (${[r.city, r.state].filter(Boolean).join(", ")})`);
+    console.log(`${String(r.ein).padStart(9, "0").padEnd(11)} ${r.name}  (${[r.city, r.state].filter(Boolean).join(", ")})`);
   }
 }
 

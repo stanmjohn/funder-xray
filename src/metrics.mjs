@@ -50,6 +50,19 @@ export function revenueSwings(filings, thresholdPct = 30) {
   return out;
 }
 
+/**
+ * Months of operating reserve in the latest year with both figures, total
+ * end-of-year assets over one month of expenses. An honest limit rides with
+ * it everywhere it prints: book assets are not cash, so this is a ceiling on
+ * the real cushion, not the cushion itself. It still separates an
+ * organization holding years of margin from one running month to month.
+ */
+export function reserveMonths(filings) {
+  const f = [...filings].reverse().find((x) => x.expenses > 0 && x.assetsEnd != null);
+  if (!f) return null;
+  return { year: f.year, months: Math.round((f.assetsEnd / (f.expenses / 12)) * 10) / 10 };
+}
+
 /** Liabilities as a share of assets in the latest year with both figures. */
 export function leverage(filings) {
   const f = [...filings]
@@ -71,6 +84,7 @@ export function classify(org) {
   const isPF = f.some((x) => x.formType === 2);
   const spend = spendRate(f);
   const assetGrowth = cagr(f, "assetsEnd");
+  const reserve = reserveMonths(f);
   const notes = [];
   if (isPF && spend.average != null && spend.average < 5) {
     notes.push(
@@ -80,11 +94,17 @@ export function classify(org) {
   if (assetGrowth != null && assetGrowth <= -3) {
     notes.push(`Assets are shrinking ${Math.abs(assetGrowth)}% a year, consistent with a spend-down or a market drawdown, the filings say which.`);
   }
+  if (!isPF && reserve != null && reserve.months < 3) {
+    notes.push(
+      `Assets cover ${reserve.months} months of spending at the ${reserve.year} rate. A partnership that adds delivery load without adding funding stresses an organization this thin, structure the funding to arrive before the work does.`
+    );
+  }
   return {
     kind: isPF ? "private-foundation" : "public-charity",
     spendAverage: spend.average,
     assetGrowthPct: assetGrowth,
     revenueGrowthPct: cagr(f, "revenue"),
+    reserveMonths: reserve?.months ?? null,
     notes,
   };
 }
