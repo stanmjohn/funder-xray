@@ -2,7 +2,7 @@
 // All computation lives in metrics.mjs; this file only formats and, where a
 // number has a known limit, prints the limit next to the number.
 
-import { cagr, spendRate, revenueSwings, leverage, classify } from "./metrics.mjs";
+import { cagr, spendRate, revenueSwings, leverage, classify, reserveMonths } from "./metrics.mjs";
 
 function usd(n) {
   if (n == null) return "—";
@@ -29,7 +29,7 @@ export function report(org, { today = new Date() } = {}) {
 
   lines.push(`# Funder X-Ray: ${org.name}`);
   lines.push("");
-  lines.push(`EIN ${org.ein} · ${org.city ?? ""}${org.state ? ", " + org.state : ""} · Forms on file: ${forms || "none"} · Machine-readable years: ${years}`);
+  lines.push(`EIN ${String(org.ein).padStart(9, "0")} · ${org.city ?? ""}${org.state ? ", " + org.state : ""} · Forms on file: ${forms || "none"} · Machine-readable years: ${years}`);
   lines.push("");
   lines.push(`Generated ${today.toISOString().slice(0, 10)} from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.`);
   lines.push("");
@@ -45,8 +45,11 @@ export function report(org, { today = new Date() } = {}) {
       c.assetGrowthPct >= 3 ? `assets growing ${signed(c.assetGrowthPct)} a year` :
       c.assetGrowthPct <= -3 ? `assets shrinking ${signed(c.assetGrowthPct)} a year` :
       `assets roughly flat (${signed(c.assetGrowthPct)} a year)`;
-    const spendTxt = c.spendAverage == null ? "spend rate not computable" : `spending an average of ${c.spendAverage}% of assets a year`;
-    lines.push(`A ${kind}, ${growth}, ${spendTxt}.`);
+    const tail =
+      c.kind === "private-foundation"
+        ? (c.spendAverage == null ? "spend rate not computable" : `spending an average of ${c.spendAverage}% of assets a year`)
+        : (c.reserveMonths == null ? "operating reserve not computable" : `holding assets that cover ${c.reserveMonths} months of spending at the latest filed rate`);
+    lines.push(`A ${kind}, ${growth}, ${tail}.`);
     for (const note of c.notes) {
       lines.push("");
       lines.push(`> ${note}`);
@@ -63,15 +66,30 @@ export function report(org, { today = new Date() } = {}) {
       lines.push(`| ${x.year} | ${FORM_NAMES[x.formType] ?? "990"} | ${usd(x.revenue)} | ${usd(x.expenses)} | ${usd(x.assetsEnd)} | ${usd(x.liabilitiesEnd)} |`);
     }
     lines.push("");
-    lines.push(`Compound annual growth across the series: assets ${signed(cagr(f, "assetsEnd"))}, revenue ${signed(cagr(f, "revenue"))}. Revenue at a foundation includes investment returns, so single years mislead and the multi-year line is the one to trust.`);
+    const revCaveat =
+      c.kind === "private-foundation"
+        ? "Revenue at a foundation includes investment returns, so single years mislead and the multi-year line is the one to trust."
+        : "Revenue at an operating nonprofit moves with grant cycles and campaign timing, so single years mislead and the multi-year line is the one to trust.";
+    lines.push(`Compound annual growth across the series: assets ${signed(cagr(f, "assetsEnd"))}, revenue ${signed(cagr(f, "revenue"))}. ${revCaveat}`);
     lines.push("");
 
-    lines.push(`## Payout, as a proxy`);
-    lines.push("");
-    if (spend.average == null) {
-      lines.push(`Not computable, the series lacks paired expense and asset figures.`);
+    if (c.kind === "private-foundation") {
+      lines.push(`## Payout, as a proxy`);
+      lines.push("");
+      if (spend.average == null) {
+        lines.push(`Not computable, the series lacks paired expense and asset figures.`);
+      } else {
+        lines.push(`Total functional expenses ran ${spend.average}% of end-of-year assets on average. This is a proxy, not the 990-PF qualifying-distribution figure, it counts overhead alongside grants and misses distributions counted elsewhere. It answers "is this funder spending like an operator or holding like an endowment," and nothing finer than that.`);
+      }
     } else {
-      lines.push(`Total functional expenses ran ${spend.average}% of end-of-year assets on average. This is a proxy, not the 990-PF qualifying-distribution figure, it counts overhead alongside grants and misses distributions counted elsewhere. It answers "is this funder spending like an operator or holding like an endowment," and nothing finer than that.`);
+      lines.push(`## Partner capacity`);
+      lines.push("");
+      const r = reserveMonths(f);
+      if (r == null) {
+        lines.push(`Operating reserve is not computable, the series lacks paired expense and asset figures.`);
+      } else {
+        lines.push(`End-of-${r.year} assets cover ${r.months} months of spending at that year's rate. Book assets are not cash, so this is a ceiling on the real cushion, not the cushion itself. It answers the scoping question a partnership structure depends on, whether this organization absorbs new delivery load from margin or needs the funding to land before the work does.`);
+      }
     }
     lines.push("");
 
@@ -80,8 +98,12 @@ export function report(org, { today = new Date() } = {}) {
     if (swings.length === 0) {
       lines.push(`No year-over-year revenue move past ±30% in the machine-readable series.`);
     } else {
+      const swingCause =
+        c.kind === "private-foundation"
+          ? "At a foundation this usually means investment returns or a large gift, the filing says which."
+          : "At an operating nonprofit this usually means a large grant landing or ending, the filing says which.";
       for (const s of swings) {
-        lines.push(`- ${s.from} to ${s.to}: ${signed(s.changePct)}. At a foundation this usually means investment returns or a large gift, the filing says which.`);
+        lines.push(`- ${s.from} to ${s.to}: ${signed(s.changePct)}. ${swingCause}`);
       }
     }
     lines.push("");

@@ -62,3 +62,20 @@ test("classify names a shrinking-assets pattern", () => {
   const c = classify(org);
   assert.ok(c.notes.some((n) => n.includes("spend-down")));
 });
+
+test("reserveMonths uses the latest year with expenses and assets", async () => {
+  const { reserveMonths } = await import("../src/metrics.mjs");
+  const f = [filing(2021, 0, 120, 60), filing(2022, 0, 120, 30)];
+  const r = reserveMonths(f);
+  assert.equal(r.year, 2022);
+  assert.equal(r.months, 3);
+});
+
+test("classify flags a public charity under three months of reserve", async () => {
+  const { classify: c2 } = await import("../src/metrics.mjs");
+  const org = { filings: [filing(2022, 100, 120, 20, 0, 0)] };
+  const c = c2(org);
+  assert.equal(c.kind, "public-charity");
+  assert.equal(c.reserveMonths, 2);
+  assert.ok(c.notes.some((n) => n.includes("months of spending")));
+});
