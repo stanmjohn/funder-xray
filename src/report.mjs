@@ -2,7 +2,7 @@
 // All computation lives in metrics.mjs; this file only formats and, where a
 // number has a known limit, prints the limit next to the number.
 
-import { cagr, spendRate, revenueSwings, leverage, classify, reserveMonths } from "./metrics.mjs";
+import { cagr, spendRate, revenueSwings, assetSwings, seriesGaps, leverage, classify, reserveMonths } from "./metrics.mjs";
 
 function usd(n) {
   if (n == null) return "—";
@@ -22,6 +22,8 @@ export function report(org, { today = new Date() } = {}) {
   const c = classify(org);
   const spend = spendRate(f);
   const swings = revenueSwings(f);
+  const aSwings = assetSwings(f);
+  const gaps = seriesGaps(f);
   const lev = leverage(f);
   const years = f.length ? `${f[0].year}–${f[f.length - 1].year}` : "none";
   const forms = [...new Set(f.map((x) => FORM_NAMES[x.formType] ?? "990"))].join(", ");
@@ -108,6 +110,27 @@ export function report(org, { today = new Date() } = {}) {
     }
     lines.push("");
 
+    lines.push(`## Asset swings`);
+    lines.push("");
+    if (aSwings.length === 0) {
+      lines.push(`No year-over-year move in end-of-year assets past ±30% in the machine-readable series.`);
+    } else {
+      const assetCause =
+        c.kind === "private-foundation"
+          ? "At a foundation a move this size usually means a large gift, a transfer out, or a market move. It can also be an error in the extracted data, so open the filing before using either year."
+          : "At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.";
+      for (const s of aSwings) {
+        lines.push(`- ${s.from} to ${s.to}: ${signed(s.changePct)}. ${assetCause}`);
+      }
+    }
+    lines.push("");
+
+    if (gaps.length) {
+      const gapList = gaps.map((g) => `${g.from} to ${g.to}`).join(", ");
+      lines.push(`The series breaks at ${gapList}. A pair of filings split by missing years is not compared, so no swing is reported across a break.`);
+      lines.push("");
+    }
+
     lines.push(`## Leverage`);
     lines.push("");
     lines.push(lev == null ? `Not computable from the series.` : `Liabilities were ${lev.pct}% of assets in ${lev.year}.`);
@@ -117,7 +140,7 @@ export function report(org, { today = new Date() } = {}) {
   if (org.filingsPdfOnly.length) {
     lines.push(`## Years on file but not machine readable`);
     lines.push("");
-    lines.push(`${org.filingsPdfOnly.join(", ")}. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the foundation's real history, not the other way around.`);
+    lines.push(`${org.filingsPdfOnly.join(", ")}. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the organization's real history, not the other way around.`);
     lines.push("");
   }
 

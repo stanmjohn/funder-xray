@@ -2,7 +2,7 @@
 
 EIN 131684331 · New York, NY · Forms on file: 990-PF · Machine-readable years: 2011–2023
 
-Generated 2026-08-25 from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.
+Generated 2026-09-17 from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.
 
 ## The read
 
@@ -33,11 +33,16 @@ Total functional expenses ran 5.3% of end-of-year assets on average. This is a p
 ## Revenue swings
 
 - 2011 to 2012: -70.4%. At a foundation this usually means investment returns or a large gift, the filing says which.
-- 2012 to 2012: +174.6%. At a foundation this usually means investment returns or a large gift, the filing says which.
 - 2012 to 2013: +52.1%. At a foundation this usually means investment returns or a large gift, the filing says which.
 - 2019 to 2020: +41.6%. At a foundation this usually means investment returns or a large gift, the filing says which.
 - 2020 to 2021: +45.4%. At a foundation this usually means investment returns or a large gift, the filing says which.
 - 2022 to 2023: -45.7%. At a foundation this usually means investment returns or a large gift, the filing says which.
+
+## Asset swings
+
+No year-over-year move in end-of-year assets past ±30% in the machine-readable series.
+
+The series breaks at 2015 to 2019. A pair of filings split by missing years is not compared, so no swing is reported across a break.
 
 ## Leverage
 
@@ -45,7 +50,7 @@ Liabilities were 14.6% of assets in 2023.
 
 ## Years on file but not machine readable
 
-2001, 2002, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2009, 2010, 2016, 2017, 2018. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the foundation's real history, not the other way around.
+2001, 2002, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2009, 2010, 2016, 2017, 2018. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the organization's real history, not the other way around.
 
 ## Sources
 

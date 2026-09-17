@@ -2,7 +2,7 @@
 
 EIN 043534407 · Boston, MA · Forms on file: 990 · Machine-readable years: 2011–2023
 
-Generated 2026-08-25 from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.
+Generated 2026-09-17 from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.
 
 ## The read
 
@@ -37,13 +37,18 @@ End-of-2023 assets cover 13.4 months of spending at that year's rate. Book asset
 - 2012 to 2013: +35.8%. At an operating nonprofit this usually means a large grant landing or ending, the filing says which.
 - 2014 to 2015: +63.4%. At an operating nonprofit this usually means a large grant landing or ending, the filing says which.
 
+## Asset swings
+
+- 2014 to 2015: +47.1%. At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.
+- 2020 to 2021: +42.3%. At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.
+
 ## Leverage
 
 Liabilities were 20.5% of assets in 2023.
 
 ## Years on file but not machine readable
 
-2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2024. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the foundation's real history, not the other way around.
+2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2024. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the organization's real history, not the other way around.
 
 ## Sources
 

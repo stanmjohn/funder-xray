@@ -2,7 +2,7 @@
 
 EIN 562618866 · Seattle, WA · Forms on file: 990-PF · Machine-readable years: 2011–2023
 
-Generated 2026-08-25 from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.
+Generated 2026-09-17 from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.
 
 ## The read
 
@@ -33,13 +33,19 @@ Total functional expenses ran 11.2% of end-of-year assets on average. This is a 
 
 No year-over-year revenue move past ±30% in the machine-readable series.
 
+## Asset swings
+
+No year-over-year move in end-of-year assets past ±30% in the machine-readable series.
+
+The series breaks at 2015 to 2019. A pair of filings split by missing years is not compared, so no swing is reported across a break.
+
 ## Leverage
 
 Liabilities were 8.5% of assets in 2023.
 
 ## Years on file but not machine readable
 
-2006, 2007, 2008, 2009, 2010, 2016, 2017, 2018. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the foundation's real history, not the other way around.
+2006, 2007, 2008, 2009, 2010, 2016, 2017, 2018. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the organization's real history, not the other way around.
 
 ## Sources
 

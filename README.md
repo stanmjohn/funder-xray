@@ -26,17 +26,17 @@ The tool reads the organization's form type and answers the scoping question tha
 
 **For an operating nonprofit (990).** The partner capacity read. Months of operating reserve, revenue trend across the series, swings that mark a large grant landing or ending, and leverage. The question it answers is whether this organization absorbs new delivery load from margin or needs the funding to land before the work does.
 
-Both reads carry the year-by-year trend, compound growth across the series, and a link to every source filing.
+Both reads carry the year-by-year trend, compound growth across the series, and a link to every source filing. Both flag any one-year move past 30 percent in revenue or in assets, and the asset flag says the move can be a data error. Only adjacent years are compared, and a break in the series is named instead of read as a swing.
 
 ## Examples, run on real organizations
 
-Two workforce and talent organizations and two foundations, committed as they came out of the tool.
+Two workforce and talent organizations and three foundations, committed as they came out of the tool.
 
 - [Year Up](examples/year-up.md), a national talent developer, thirteen machine-readable years
 - [CodePath](examples/codepath.md), a technical-education nonprofit in a fast growth phase
 - [Gates Foundation](examples/gates-foundation.md)
 - [Ford Foundation](examples/ford-foundation.md)
-- [William Penn Foundation](examples/william-penn-foundation.md), where the payout proxy flags under the 5 percent floor and the report says to open the real 990-PF before concluding
+- [Edna McConnell Clark Foundation](examples/edna-mcconnell-clark-foundation.md), a planned spend-down, where the report reads assets shrinking 9.1 percent a year and names the two breaks in its series
 
 ## The integrity rule
 
@@ -50,7 +50,7 @@ Every report ends with a section titled "What this report refuses to do." It mak
 npm test
 ```
 
-Eighteen tests. The math runs against synthetic series with hand-checkable values, the report tests pin the sentences that must never disappear, and one live test asserts the API fields this tool depends on, skippable offline with `SKIP_LIVE=1`.
+Twenty-two tests. The math runs against synthetic series with hand-checkable values, the report tests pin the sentences that must never disappear, and one live test asserts the API fields this tool depends on, skippable offline with `SKIP_LIVE=1`.
 
 ## License
 
