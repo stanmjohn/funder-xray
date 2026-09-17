@@ -35,16 +35,40 @@ export function spendRate(filings) {
   return { perYear: rows, average: avg };
 }
 
-/** Year-over-year revenue swings, flagging any move past the threshold. */
-export function revenueSwings(filings, thresholdPct = 30) {
+/**
+ * Year-over-year swings in one field, flagging any move past the threshold.
+ * Only adjacent years are compared. A pair split by missing years is not a
+ * year-over-year move, so it is skipped here and listed by seriesGaps.
+ */
+export function swings(filings, field, thresholdPct = 30) {
   const out = [];
   for (let i = 1; i < filings.length; i++) {
     const prev = filings[i - 1];
     const cur = filings[i];
-    if (!(prev.revenue > 0) || cur.revenue == null) continue;
-    const change = pct(cur.revenue / prev.revenue - 1);
+    if (cur.year - prev.year !== 1) continue;
+    if (!(prev[field] > 0) || cur[field] == null) continue;
+    const change = pct(cur[field] / prev[field] - 1);
     if (Math.abs(change) >= thresholdPct) {
       out.push({ from: prev.year, to: cur.year, changePct: change });
+    }
+  }
+  return out;
+}
+
+export function revenueSwings(filings, thresholdPct = 30) {
+  return swings(filings, "revenue", thresholdPct);
+}
+
+export function assetSwings(filings, thresholdPct = 30) {
+  return swings(filings, "assetsEnd", thresholdPct);
+}
+
+/** Breaks in the series, pairs of consecutive filings more than a year apart. */
+export function seriesGaps(filings) {
+  const out = [];
+  for (let i = 1; i < filings.length; i++) {
+    if (filings[i].year - filings[i - 1].year > 1) {
+      out.push({ from: filings[i - 1].year, to: filings[i].year });
     }
   }
   return out;

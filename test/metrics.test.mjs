@@ -3,7 +3,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { cagr, spendRate, revenueSwings, leverage, classify } from "../src/metrics.mjs";
+import { cagr, spendRate, revenueSwings, assetSwings, seriesGaps, leverage, classify } from "../src/metrics.mjs";
 
 function filing(year, revenue, expenses, assetsEnd, liabilitiesEnd = 0, formType = 2) {
   return { year, revenue, expenses, assetsEnd, liabilitiesEnd, formType, pdfUrl: null };
@@ -34,6 +34,22 @@ test("revenueSwings flags only moves past the threshold", () => {
   assert.equal(swings.length, 1);
   assert.equal(swings[0].from, 2021);
   assert.equal(swings[0].changePct, 132.6);
+});
+
+test("revenueSwings skips a pair of filings split by missing years", () => {
+  // 100 -> 300 across 2015 to 2019 is not a year-over-year move.
+  const f = [filing(2015, 100, 0, 1), filing(2019, 300, 0, 1), filing(2020, 310, 0, 1)];
+  assert.equal(revenueSwings(f, 30).length, 0);
+  assert.deepEqual(seriesGaps(f), [{ from: 2015, to: 2019 }]);
+});
+
+test("assetSwings flags an adjacent-year asset move past the threshold", () => {
+  // 400 -> 200 is -50%, 200 -> 220 is +10%.
+  const f = [filing(2011, 0, 0, 400), filing(2012, 0, 0, 200), filing(2013, 0, 0, 220)];
+  const s = assetSwings(f, 30);
+  assert.equal(s.length, 1);
+  assert.equal(s[0].to, 2012);
+  assert.equal(s[0].changePct, -50);
 });
 
 test("leverage uses the latest year carrying both figures", () => {

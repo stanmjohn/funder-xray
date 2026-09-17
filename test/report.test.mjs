@@ -45,3 +45,11 @@ test("the refusal section ships in every report", () => {
 test("a 30%+ revenue swing is reported with its usual cause named", () => {
   assert.ok(md.includes("+40%"));
 });
+
+test("an asset swing section ships in every report with data", () => {
+  assert.ok(md.includes("## Asset swings"));
+});
+
+test("the PDF-only disclosure names the organization, not a foundation", () => {
+  assert.ok(md.includes("the organization's real history"));
+});

@@ -2,7 +2,7 @@
 
 EIN 815338932 · San Francisco, CA · Forms on file: 990-EZ, 990 · Machine-readable years: 2017–2023
 
-Generated 2026-08-25 from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.
+Generated 2026-09-17 from the ProPublica Nonprofit Explorer API, which republishes IRS Form 990 data. Every figure below traces to a filing linked in the Sources section.
 
 ## The read
 
@@ -35,13 +35,22 @@ End-of-2023 assets cover 27.2 months of spending at that year's rate. Book asset
 - 2021 to 2022: +155.8%. At an operating nonprofit this usually means a large grant landing or ending, the filing says which.
 - 2022 to 2023: +32.6%. At an operating nonprofit this usually means a large grant landing or ending, the filing says which.
 
+## Asset swings
+
+- 2017 to 2018: +3104.7%. At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.
+- 2018 to 2019: +466.7%. At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.
+- 2019 to 2020: +146.1%. At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.
+- 2020 to 2021: +75.6%. At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.
+- 2021 to 2022: +167.3%. At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.
+- 2022 to 2023: +99.5%. At an operating nonprofit a move this size usually means a multi-year grant booked up front, a capital gift, or a merger. It can also be an error in the extracted data, so open the filing before using either year.
+
 ## Leverage
 
 Liabilities were 15.2% of assets in 2023.
 
 ## Years on file but not machine readable
 
-2024. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the foundation's real history, not the other way around.
+2024. These filings exist as PDFs only, so nothing above includes them. The series is shorter than the organization's real history, not the other way around.
 
 ## Sources
 
