@@ -1,5 +1,7 @@
 # Funder X-Ray
 
+[![test](https://github.com/stanmjohn/funder-xray/workflows/test/badge.svg)](https://github.com/stanmjohn/funder-xray/blob/main/.github/workflows/test.yml)
+
 What has a foundation given, to whom, and is it paying out what the IRS requires?
 
 ## Who it is for
