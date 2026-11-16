@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "placeholder": "foundation",
+    "built": "2026-11-15",
+    "efile": "example-spend-down-fund.efile.xml"
+  },
+  "response": {
+    "organization": {
+      "ein": 2,
+      "name": "Example Spend-Down Fund",
+      "city": "Example City",
+      "state": "PA",
+      "ntee_code": "",
+      "ruling_date": null,
+      "latest_object_id": "000000000000000002"
+    },
+    "filings_with_data": [
+      {
+        "tax_prd": 202309,
+        "tax_prd_yr": 2023,
+        "formtype": 2,
+        "pdf_url": null,
+        "totrevenue": 2100000,
+        "totfuncexpns": 26700000,
+        "totassetsend": 40100000,
+        "totliabend": 500000,
+        "contrpdpbks": 25000000,
+        "totexpnsexempt": 26300000,
+        "fairmrktvalamt": 41000000,
+        "distribamt": 3100000
+      },
+      {
+        "tax_prd": 202209,
+        "tax_prd_yr": 2022,
+        "formtype": 2,
+        "pdf_url": null,
+        "totrevenue": 900000,
+        "totfuncexpns": 38200000,
+        "totassetsend": 64800000,
+        "totliabend": 700000,
+        "contrpdpbks": 35900000,
+        "totexpnsexempt": 37800000,
+        "fairmrktvalamt": 66100000,
+        "distribamt": 5000000
+      },
+      {
+        "tax_prd": 202109,
+        "tax_prd_yr": 2021,
+        "formtype": 2,
+        "pdf_url": null,
+        "totrevenue": 12800000,
+        "totfuncexpns": 36900000,
+        "totassetsend": 105600000,
+        "totliabend": 900000,
+        "contrpdpbks": 34400000,
+        "totexpnsexempt": 36500000,
+        "fairmrktvalamt": 107900000,
+        "distribamt": 6300000
+      },
+      {
+        "tax_prd": 202009,
+        "tax_prd_yr": 2020,
+        "formtype": 2,
+        "pdf_url": null,
+        "totrevenue": 4300000,
+        "totfuncexpns": 33600000,
+        "totassetsend": 130900000,
+        "totliabend": 1100000,
+        "contrpdpbks": 31000000,
+        "totexpnsexempt": 33100000,
+        "fairmrktvalamt": 133200000,
+        "distribamt": 7800000
+      },
+      {
+        "tax_prd": 201909,
+        "tax_prd_yr": 2019,
+        "formtype": 2,
+        "pdf_url": null,
+        "totrevenue": 9100000,
+        "totfuncexpns": 27800000,
+        "totassetsend": 161300000,
+        "totliabend": 1200000,
+        "contrpdpbks": 25100000,
+        "totexpnsexempt": 27400000,
+        "fairmrktvalamt": 164000000,
+        "distribamt": 8900000
+      },
+      {
+        "tax_prd": 201809,
+        "tax_prd_yr": 2018,
+        "formtype": 2,
+        "pdf_url": null,
+        "totrevenue": 6200000,
+        "totfuncexpns": 21500000,
+        "totassetsend": 182000000,
+        "totliabend": 1400000,
+        "contrpdpbks": 18900000,
+        "totexpnsexempt": 21000000,
+        "fairmrktvalamt": 185500000,
+        "distribamt": 8700000
+      }
+    ],
+    "filings_without_data": [],
+    "data_source": "Invented for this example.",
+    "api_version": 2
+  }
+}

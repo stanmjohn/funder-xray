@@ -1,20 +1,22 @@
 #!/usr/bin/env node
-// funder-xray <ein> [--out file.md | --stdout]
+// funder-xray <ein> [--out file.md | --stdout] [--no-grants]
 // funder-xray search "<name>"
 //
-// One command in, one markdown memo out. No server, no key, no account.
+// One command in, one markdown report out. No server, no key, no account.
 
 import { writeFileSync } from "node:fs";
 import { search, organization, cleanEin } from "../src/propublica.mjs";
+import { fetchGrants } from "../src/efile.mjs";
 import { report } from "../src/report.mjs";
 
 const args = process.argv.slice(2);
 
 function usage(code) {
   console.log(`Usage:
-  funder-xray <ein>              Analyze a foundation, write <ein>-<name>.md
+  funder-xray <ein>              Write a report on any nine-digit EIN to <ein>-<name>.md
   funder-xray <ein> --stdout     Print the report instead of writing a file
   funder-xray <ein> --out x.md   Write to a chosen path
+  funder-xray <ein> --no-grants  Skip the grant list, which reads IRS bulk e-file data
   funder-xray search "<name>"    Find an EIN by organization name`);
   process.exitCode = code;
 }
@@ -34,6 +36,19 @@ async function runSearch(q) {
   }
 }
 
+async function grantsFor(org) {
+  if (!org.filings.some((x) => x.formType === 2)) return undefined;
+  if (args.includes("--no-grants")) return { status: "skipped" };
+  if (!org.latestObjectId) return { status: "none" };
+  try {
+    console.error("Reading the latest e-filed return from IRS bulk e-file data. The first run for an EIN can take a minute.");
+    const data = await fetchGrants(org.latestObjectId);
+    return data ? { status: "ok", data } : { status: "not-found" };
+  } catch (e) {
+    return { status: "error", reason: e.message };
+  }
+}
+
 async function runReport(einArg) {
   let ein;
   try {
@@ -49,6 +64,7 @@ async function runReport(einArg) {
     process.exitCode = 1;
     return;
   }
+  org.grants = await grantsFor(org);
 
   const md = report(org);
 

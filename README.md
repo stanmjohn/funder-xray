@@ -1,48 +1,108 @@
 # Funder X-Ray
 
-A nine-digit EIN in, a one-page read on a prospective partner out.
+What has a foundation given, to whom, and is it paying out what the IRS requires?
 
-Partnerships in the social sector fail at scoping more often than at delivery. Before anyone structures a multi-year program with a workforce organization, a talent developer, or a foundation, someone has to know what kind of partner the filings say they can be. A funder quietly winding down and a perpetual endowment have different five-year horizons. A nonprofit holding two months of reserve and one holding two years absorb new delivery load differently, and the partnership structure has to know which one it is signing.
+## Who it is for
 
-That read lives in IRS Form 990 filings, roughly forty minutes per organization if you know what to look for, behind subscription paywalls if you do not. This tool does it in seconds from the same public data and writes it as a markdown memo you can paste into a scoping document.
+Funders, program leads, and board members who need a sourced read on a foundation or a nonprofit partner before a first call. Also development directors at smaller organizations that cannot pay for a grants database.
 
-## Use
+An EIN goes in. The EIN is the Employer Identification Number, the nine-digit ID the IRS gives every organization. A one-page report comes out, built from the organization's Form 990 filings. Form 990 is the yearly return a nonprofit files with the IRS. A private foundation files its own version, the 990-PF.
 
-Requires Node 20+. No API key, no account, no server.
+## Example
+
+This excerpt comes from a made-up foundation, so every name and number in it is invented. Run the tool on any real EIN and the same report comes back for a real organization.
+
+<!-- excerpt from examples/example-valley-foundation.md -->
+> **PLACEHOLDER. This foundation is made up.** Every name and number below is invented, and a live run on any real EIN replaces them with that organization's own IRS filings.
+<!-- end excerpt -->
+
+<!-- excerpt from examples/example-valley-foundation.md -->
+> A private foundation (990-PF), assets growing +3.8% a year from $238,500,000 in 2016, paying out an average of 5% of the fair market value of its assets in charitable disbursements, and meeting its required payout in 7 of 8 years.
+>
+> Its latest e-filed year, ending 2023-12-31, lists 16 grants totaling $14,900,000. The 10 largest recipients received 90.9% of the dollars.
+>
+> > Charitable disbursements fell short of the distributable amount, the IRS minimum payout, in 1 of 8 years (2019). Charitable disbursements are close to the qualifying distributions the IRS counts against that minimum but are not the same figure, so read the 990-PF before concluding.
+<!-- end excerpt -->
+
+<!-- excerpt from examples/example-valley-foundation.md -->
+> The median grant was $800,000. The 10 largest recipients received 90.9% of the dollars.
+>
+> | Recipient | Grants | Amount |
+> |---|---|---|
+> | Example Literacy Fund | 2 | $3,500,000 |
+> | Example Housing Partnership | 1 | $2,200,000 |
+> | Example Health Access Network | 1 | $1,800,000 |
+> | Example Youth Arts Collective | 1 | $1,200,000 |
+> | Example River Conservancy | 1 | $1,100,000 |
+> | Example Food Bank Alliance | 1 | $900,000 |
+> | Example Workforce Partners | 1 | $850,000 |
+> | Example Legal Aid Society | 1 | $750,000 |
+> | Example Global Water Trust | 1 | $650,000 |
+> | Example Public Library Friends | 1 | $600,000 |
+<!-- end excerpt -->
+
+Three full reports, all made up and all marked PLACEHOLDER.
+
+- [Example Valley Foundation](examples/example-valley-foundation.md), a foundation meant to last, with one year below its required payout and one short year after a change in fiscal year.
+- [Example Spend-Down Fund](examples/example-spend-down-fund.md), a foundation spending down its assets to close, with assets shrinking 26.1% a year and a few large closing grants.
+- [Example Workforce Partners](examples/example-workforce-partners.md), an operating nonprofit read as a prospective partner, with months of reserve and a fast growth phase.
+
+## How it works
+
+1. The tool reads every machine-readable year of an organization's filings from the ProPublica Nonprofit Explorer API. It sorts them by the month each fiscal year ends.
+2. For a foundation, it sets each year's charitable disbursements beside its required payout and the fair market value of its assets. The required payout is the distributable amount, the minimum the IRS says a private foundation must pay out. Charitable disbursements are grants plus the foundation's own charitable spending.
+3. For a foundation, it then finds the latest e-filed 990-PF in the IRS bulk e-file data and reads the grants paid that year. It checks that the listed grants add up to the total the filing reports. Only then does it print the grant count, the median grant, the largest recipients, and where the money went. A grant to a person is counted but never named.
+4. For an operating nonprofit, it reads months of operating reserve, the revenue trend, and swings that mark a large grant landing or ending.
+5. Every number carries its limit beside it. A year that covers less than twelve months is named and left out of trends. Years that exist only as PDFs are listed, not dropped. Where the data cannot support a claim, the report says so instead of rounding to a claim.
+
+## Data sources
+
+- [ProPublica Nonprofit Explorer API](https://projects.propublica.org/nonprofits/api). It republishes the IRS Annual Extract of Tax-Exempt Organization Financial Data. Every financial figure in a report comes from here.
+- [IRS Form 990 Series Downloads](https://www.irs.gov/charities-non-profits/form-990-series-downloads). The IRS publishes every e-filed return here as XML in large zip files. The tool reads only the slices it needs, the zip's table of contents and the one return. The grant list comes from here.
+- [IRS, Private foundations study terms and concepts](https://www.irs.gov/statistics/soi-tax-stats-private-foundations-study-terms-and-concepts). The source for what the distributable amount and qualifying distributions mean.
+
+The tool reads four 990-PF fields from the API. The IRS field guide for the annual extract, linked from the [IRS annual extract page](https://www.irs.gov/statistics/soi-tax-stats-annual-extract-of-tax-exempt-organization-financial-data), describes each one and names its line on the form.
+
+- Grants paid is contributions, gifts, grants paid, Part I line 25, column (a).
+- Charitable disbursements is total expenses for exempt purposes, Part I line 26, column (d).
+- Fair market value of assets is total assets at end-of-year fair market value, from item I in the form's header.
+- The required payout is the distributable amount, Part X line 7.
+
+## Limits
+
+The report shows grants from one year only, the latest e-filed 990-PF. It makes no claim about grant concentration across years or about how many grantees a foundation funds year after year. For an operating nonprofit it makes no claim about who funds the organization. It draws no conclusion a linked filing cannot support.
+
+- Charitable disbursements come close to the qualifying distributions the IRS counts against the required payout, but they are not the same figure. A year marked No is a reason to open the 990-PF, not a finding.
+- The months-of-reserve figure uses total assets. Book assets are not cash, so it is a ceiling on the real cushion.
+- The grant list can be a later year than the financial trend, because the IRS e-file data can run a year ahead of the API's summary data. The report says so when it happens.
+- The first grant lookup for an EIN reads tens of megabytes from the IRS in small slices and can take a minute. Later runs reuse the location saved under `out/`. It searches the IRS zip files for the year the return's ID starts with and the year after. A return outside those years is reported as not found.
+- A swing is any year-over-year move past 30 percent. That line is a chosen threshold, not a standard.
+- Some years exist only as PDFs, so the trend can start later than the organization's history and can have gaps.
+
+Not built yet. Grants across several years, which would show concentration and how long grantees stay funded.
+
+## Run it yourself
+
+Requires Node 20 or newer. No install, no key, no account.
 
 ```
-node bin/funder-xray.mjs 04-3534407           # writes a report file
-node bin/funder-xray.mjs 04-3534407 --stdout  # prints it instead
-node bin/funder-xray.mjs search "year up"
+node bin/funder-xray.mjs <EIN>                # any nine-digit EIN, writes a report file
+node bin/funder-xray.mjs <EIN> --stdout       # prints the report instead
+node bin/funder-xray.mjs <EIN> --no-grants    # skips the IRS grant list lookup
+node bin/funder-xray.mjs search "<name>"      # finds an EIN by organization name
 ```
 
-Data comes from the [ProPublica Nonprofit Explorer API](https://projects.propublica.org/nonprofits/api), which republishes IRS 990 data.
+To check it yourself, run `npm run examples` and then `git diff examples/`. Nothing changes, because every committed example is rebuilt from its fixture in `test/fixtures/`.
 
-## What a report carries
+## How this was built
 
-The tool reads the organization's form type and answers the scoping question that fits it.
+Built with AI coding assistants. Stan John set the design and the rules in AGENTS.md, which any AI coding tool must follow when it changes this repo. A test rebuilds every committed example from its fixture and compares it to the file byte for byte.
 
-**For a foundation (990-PF).** Growing, holding, or winding down. Payout as a share of assets, labeled as the proxy it is, with a flag when it sits under the 5 percent statutory floor.
+## Related tools
 
-**For an operating nonprofit (990).** The partner capacity read. Months of operating reserve, revenue trend across the series, swings that mark a large grant landing or ending, and leverage. The question it answers is whether this organization absorbs new delivery load from margin or needs the funding to land before the work does.
+[Cost-per-Outcome Workbench](https://github.com/stanmjohn/cost-per-outcome) measures what one program result costs against a comparison group, and ranks the assumptions that drive that cost.
 
-Both reads carry the year-by-year trend, compound growth across the series, and a link to every source filing. Both flag any one-year move past 30 percent in revenue or in assets, and the asset flag says the move can be a data error. Only adjacent years are compared, and a break in the series is named instead of read as a swing.
-
-## Examples, run on real organizations
-
-Two workforce and talent organizations and three foundations, committed as they came out of the tool.
-
-- [Year Up](examples/year-up.md), a national talent developer, thirteen machine-readable years
-- [CodePath](examples/codepath.md), a technical-education nonprofit in a fast growth phase
-- [Gates Foundation](examples/gates-foundation.md)
-- [Ford Foundation](examples/ford-foundation.md)
-- [Edna McConnell Clark Foundation](examples/edna-mcconnell-clark-foundation.md), a planned spend-down, where the report reads assets shrinking 9.1 percent a year and names the two breaks in its series
-
-## The integrity rule
-
-Every number carries its own limit beside it and a link to the filing behind it. The payout figure is a proxy built on total functional expenses, and the report says so where the number appears. The reserve figure is a ceiling because book assets are not cash, and the report says that beside the number too. Years that exist only as PDFs are disclosed rather than silently dropped from the series. Where the data cannot support a claim, the report says so instead of rounding to a claim.
-
-Every report ends with a section titled "What this report refuses to do." It makes no claim about who a funder actually funds, grant concentration, or multi-year grantee share. That data lives in the 990 grant schedules, which the summary API does not carry, and parsing the raw XML e-files honestly is its own project. That is the roadmap, not this version.
+[Impact Chain](https://github.com/stanmjohn/impact-chain) tracks a program from community reach to household gain, and shows where people leave and which step falls furthest short of its benchmark.
 
 ## Tests
 
@@ -50,7 +110,7 @@ Every report ends with a section titled "What this report refuses to do." It mak
 npm test
 ```
 
-Twenty-two tests. The math runs against synthetic series with hand-checkable values, the report tests pin the sentences that must never disappear, and one live test asserts the API fields this tool depends on, skippable offline with `SKIP_LIVE=1`.
+The math runs on synthetic series with hand-checkable values. The report tests pin the sentences that must never disappear. One test rebuilds every committed example and compares it to the file byte for byte. Another checks each excerpt in this README against the example it quotes. The live tests call the ProPublica API and the IRS downloads page. Skip them offline with `SKIP_LIVE=1`.
 
 ## License
 

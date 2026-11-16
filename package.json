@@ -1,13 +1,14 @@
 {
   "name": "funder-xray",
-  "version": "0.1.0",
-  "description": "Foundation financial x-ray from public IRS 990 data. EIN in, funder analysis out.",
+  "version": "0.2.0",
+  "description": "EIN in, one-page giving summary out. Grants paid against the IRS minimum payout, who a foundation funded in its latest e-filed year, and its financial trend, from public IRS Form 990 data.",
   "type": "module",
   "bin": {
     "funder-xray": "bin/funder-xray.mjs"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "examples": "node scripts/build-examples.mjs"
   },
   "engines": {
     "node": ">=20"

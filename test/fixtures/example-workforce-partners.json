@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "placeholder": "organization",
+    "built": "2026-11-15"
+  },
+  "response": {
+    "organization": {
+      "ein": 3,
+      "name": "Example Workforce Partners",
+      "city": "Example City",
+      "state": "PA",
+      "ntee_code": "",
+      "ruling_date": null,
+      "latest_object_id": null
+    },
+    "filings_with_data": [
+      {
+        "tax_prd": 202312,
+        "tax_prd_yr": 2023,
+        "formtype": 0,
+        "pdf_url": null,
+        "totrevenue": 5600000,
+        "totfuncexpns": 5800000,
+        "totassetsend": 2150000,
+        "totliabend": 450000
+      },
+      {
+        "tax_prd": 202212,
+        "tax_prd_yr": 2022,
+        "formtype": 0,
+        "pdf_url": null,
+        "totrevenue": 5200000,
+        "totfuncexpns": 4900000,
+        "totassetsend": 2450000,
+        "totliabend": 400000
+      },
+      {
+        "tax_prd": 202112,
+        "tax_prd_yr": 2021,
+        "formtype": 0,
+        "pdf_url": null,
+        "totrevenue": 4800000,
+        "totfuncexpns": 3700000,
+        "totassetsend": 2200000,
+        "totliabend": 310000
+      },
+      {
+        "tax_prd": 202012,
+        "tax_prd_yr": 2020,
+        "formtype": 0,
+        "pdf_url": null,
+        "totrevenue": 3100000,
+        "totfuncexpns": 2900000,
+        "totassetsend": 1050000,
+        "totliabend": 240000
+      },
+      {
+        "tax_prd": 201912,
+        "tax_prd_yr": 2019,
+        "formtype": 0,
+        "pdf_url": null,
+        "totrevenue": 2600000,
+        "totfuncexpns": 2300000,
+        "totassetsend": 780000,
+        "totliabend": 160000
+      },
+      {
+        "tax_prd": 201812,
+        "tax_prd_yr": 2018,
+        "formtype": 0,
+        "pdf_url": null,
+        "totrevenue": 1400000,
+        "totfuncexpns": 1100000,
+        "totassetsend": 420000,
+        "totliabend": 90000
+      },
+      {
+        "tax_prd": 201712,
+        "tax_prd_yr": 2017,
+        "formtype": 1,
+        "pdf_url": null,
+        "totrevenue": 180000,
+        "totfuncexpns": 150000,
+        "totassetsend": 60000,
+        "totliabend": 10000
+      }
+    ],
+    "filings_without_data": [
+      {
+        "tax_prd": 202412,
+        "tax_prd_yr": 2024,
+        "formtype": 0,
+        "pdf_url": null
+      }
+    ],
+    "data_source": "Invented for this example.",
+    "api_version": 2
+  }
+}
